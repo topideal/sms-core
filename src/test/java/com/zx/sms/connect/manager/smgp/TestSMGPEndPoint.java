@@ -1,17 +1,18 @@
 package com.zx.sms.connect.manager.smgp;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.locks.LockSupport;
-
+import com.zx.sms.codec.smgp.msg.SMGPSubmitMessage;
+import com.zx.sms.codec.smgp.msg.SMGPSubmitRespMessage;
+import com.zx.sms.common.util.ChannelUtil;
+import com.zx.sms.connect.manager.EndpointEntity.ChannelType;
+import com.zx.sms.connect.manager.EndpointManager;
+import com.zx.sms.handler.api.BusinessHandlerInterface;
+import io.netty.util.concurrent.Promise;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.zx.sms.connect.manager.EndpointEntity.ChannelType;
-import com.zx.sms.connect.manager.EndpointEntity.SupportLongMessage;
-import com.zx.sms.connect.manager.EndpointManager;
-import com.zx.sms.handler.api.BusinessHandlerInterface;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *经测试，35个连接，每个连接每200/s条消息
  *lenovoX250能承担7000/s消息编码解析无压力。
@@ -30,41 +31,41 @@ public class TestSMGPEndPoint {
 	
 		final EndpointManager manager = EndpointManager.INS;
 
-		SMGPServerEndpointEntity server = new SMGPServerEndpointEntity();
+	/*	SMGPServerEndpointEntity server = new SMGPServerEndpointEntity();
 		server.setId("smgpserver");
 		server.setHost("127.0.0.1");
-		server.setPort(9890);
+		server.setPort(8900);
 		server.setValid(true);
 		//使用ssl加密数据流
 		server.setUseSSL(false);
 		
 		SMGPServerChildEndpointEntity child = new SMGPServerChildEndpointEntity();
 		child.setId("smgpchild");
-		child.setClientID("333");
-		child.setPassword("0555");
+		child.setClientID("pFPK5p5V");
+		child.setPassword("140changeadminPass");
 
 		child.setValid(true);
-		child.setChannelType(ChannelType.DUPLEX);
+		child.setChannelType(ChannelType.DOWN);
 		child.setClientVersion((byte)0x13);
 		child.setMaxChannels((short)3);
 		child.setRetryWaitTimeSec((short)30);
 		child.setMaxRetryCnt((short)3);
 		child.setReSendFailMsg(false);
 		child.setIdleTimeSec((short)15);
-		child.setSupportLongmsg(SupportLongMessage.SEND);  //接收长短信时不自动合并
+		child.setSupportLongmsg(SupportLongMessage.BOTH);  //接收长短信时不自动合并
 		List<BusinessHandlerInterface> serverhandlers = new ArrayList<BusinessHandlerInterface>();
 		serverhandlers.add(new SMGPMessageReceiveHandler());   
 		child.setBusinessHandlerSet(serverhandlers);
 		server.addchild(child);
-		manager.addEndpointEntity(server);
+		manager.addEndpointEntity(server);*/
 		
 		SMGPClientEndpointEntity client = new SMGPClientEndpointEntity();
 		client.setId("smgpclient");
-		client.setHost("127.0.0.1");
-		client.setPort(9890);
-		client.setClientID("333");
-		client.setPassword("0555");
-		client.setChannelType(ChannelType.DUPLEX);
+		client.setHost("222.66.24.235");
+		client.setPort(8900);
+		client.setClientID("pFPK5p5V");
+		client.setPassword("140changeadminPass");
+		client.setChannelType(ChannelType.DOWN);
 
 		client.setMaxChannels((short)30);
 		client.setRetryWaitTimeSec((short)100);
@@ -74,7 +75,8 @@ public class TestSMGPEndPoint {
 //		client.setWriteLimit(200);
 //		client.setReadLimit(200);
 		List<BusinessHandlerInterface> clienthandlers = new ArrayList<BusinessHandlerInterface>();
-		clienthandlers.add( new SMGPSessionConnectedHandler(10000)); 
+	//	clienthandlers.add( new SMGPSessionConnectedHandler(1));
+		clienthandlers.add( new SMGPMessageReceiveHandler());
 		client.setBusinessHandlerSet(clienthandlers);
 		
 		manager.addEndpointEntity(client);
@@ -82,12 +84,35 @@ public class TestSMGPEndPoint {
 		manager.openAll();
 		
 		Thread.sleep(1000);
-		for(int i=0;i<child.getMaxChannels();i++)
+		/*for(int i=0;i<child.getMaxChannels();i++){
 			manager.openEndpoint(client);
+		}*/
+		manager.openEndpoint(client);
 		 System.out.println("start.....");
-		LockSupport.park();
+
+		SMGPSubmitMessage submitmessage=new SMGPSubmitMessage();
+		submitmessage.setDestTermIdArray("18939955801");
+		submitmessage.setMsgContent("测试电信网关...20210122001");
+		submitmessage.setSrcTermId("1065902100990000000");
+
+
+		List<Promise<SMGPSubmitRespMessage>> futures = ChannelUtil.syncWriteLongMsgToEntity("smgpclient",submitmessage);
+		for(Promise  future: futures){
+			//调用sync()方法，阻塞线程。等待接收response
+			future.sync();
+			//接收成功，如果失败可以获取失败原因，比如遇到连接突然中断错误等等
+			if(future.isSuccess()){
+				//打印收到的response消息
+				logger.info("response:{}",future.get());
+			}else{
+
+				logger.error("response:{}",future.cause());
+			}
+		}
+
+	//	LockSupport.park();
        
-		EndpointManager.INS.close();
+	//	EndpointManager.INS.close();
 	}
 	
 }

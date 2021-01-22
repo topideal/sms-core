@@ -1,12 +1,5 @@
 package com.zx.sms.session.smgp;
 
-import java.util.Arrays;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Ints;
 import com.zx.sms.codec.smgp.msg.SMGPLoginMessage;
@@ -18,12 +11,17 @@ import com.zx.sms.connect.manager.smgp.SMGPEndpointEntity;
 import com.zx.sms.connect.manager.smgp.SMGPServerChildEndpointEntity;
 import com.zx.sms.connect.manager.smgp.SMGPServerEndpointEntity;
 import com.zx.sms.session.AbstractSessionLoginManager;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
 
 public class SMGPSessionLoginManager extends AbstractSessionLoginManager {
 	private static final Logger logger = LoggerFactory.getLogger(SMGPSessionLoginManager.class);
@@ -87,7 +85,7 @@ public class SMGPSessionLoginManager extends AbstractSessionLoginManager {
 
 		byte[] timestampBytes = String.format("%010d", message.getTimestamp()).getBytes(entity.getChartset());
 		byte[] authBytes = DigestUtils.md5(Bytes.concat(userBytes, new byte[7], passwdBytes, timestampBytes));
-		System.out.println(message);
+	//	System.out.println(message);
 		if (Arrays.equals(authBytes, message.getClientAuth())) {
 			return 0;
 		} else {

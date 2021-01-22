@@ -2,7 +2,7 @@ package com.zx.sms.codec.smgp.util;
 
 public class ByteUtil {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		byte[] buffer = new byte[20];
 		int2byte(577, buffer, 0);
 		int offset = appendString("sdfs".getBytes(), 10, buffer, 4);
@@ -10,7 +10,7 @@ public class ByteUtil {
 		System.out.println(byte2int(buffer, 0));
 		System.out.println(new String(removeString(buffer, 4)));
 
-	}
+	}*/
 
 	public static byte[] rfillBytes(byte[] src, int len) {
 

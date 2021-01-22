@@ -1,24 +1,29 @@
 package com.zx.sms.codec.smgp;
 
+import com.zx.sms.codec.AbstractSMGPTestMessageCodec;
+import com.zx.sms.codec.smgp.msg.SMGPSubmitMessage;
+import com.zx.sms.codec.smgp.msg.SMGPSubmitRespMessage;
+import com.zx.sms.common.util.ChannelUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-
+import io.netty.util.concurrent.Promise;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.zx.sms.codec.AbstractSMGPTestMessageCodec;
-import com.zx.sms.codec.smgp.msg.SMGPSubmitMessage;
+import java.util.List;
 
 public class TestSMGPSubmitMessage extends AbstractSMGPTestMessageCodec<SMGPSubmitMessage> {
 
 	@Test
-	public void test1() {
+	public void test1() throws Exception {
 		SMGPSubmitMessage msg = new SMGPSubmitMessage();
-		msg.setDestTermIdArray(new String[]{"13800138000","13800138001","13800138002","13800138003"});
+		msg.setDestTermIdArray(new String[]{"18939955801"});
 		msg.setLinkId("1023rsd");
 		msg.setMsgContent("第一种：通过注解@PostConstruct 和 @PreDestroy 方法 实现初始化和销毁bean之前进行的操作");
-		msg.setSrcTermId("10086988");
-		msg.setMsgSrc("901988");
+		msg.setSrcTermId("1065902100990");
+		msg.setMsgSrc("000000");
+
+		List<Promise<SMGPSubmitRespMessage>> futures = ChannelUtil.syncWriteLongMsgToEntity("smgpclient",msg);
 		test0(msg);
 	}
 	

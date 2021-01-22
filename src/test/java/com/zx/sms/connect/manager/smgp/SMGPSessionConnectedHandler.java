@@ -1,15 +1,13 @@
 package com.zx.sms.connect.manager.smgp;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.zx.sms.BaseMessage;
-import com.zx.sms.codec.sgip12.msg.SgipDeliverRequestMessage;
-import com.zx.sms.codec.sgip12.msg.SgipSubmitRequestMessage;
 import com.zx.sms.codec.smgp.msg.SMGPDeliverMessage;
 import com.zx.sms.codec.smgp.msg.SMGPSubmitMessage;
 import com.zx.sms.connect.manager.EndpointEntity;
 import com.zx.sms.connect.manager.ServerEndpoint;
 import com.zx.sms.handler.api.gate.SessionConnectedHandler;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SMGPSessionConnectedHandler extends SessionConnectedHandler {
 	public SMGPSessionConnectedHandler(int t) {
@@ -28,8 +26,8 @@ public class SMGPSessionConnectedHandler extends SessionConnectedHandler {
 			return pdu;
 		} else {
 			SMGPSubmitMessage pdu = new SMGPSubmitMessage();
-			pdu.setSrcTermId("10086");
-	        pdu.setDestTermIdArray("13800138000");
+			pdu.setSrcTermId("1065902100990");
+	        pdu.setDestTermIdArray("18939955801");
 	        pdu.setMsgContent(content);
 			return pdu;
 		}

@@ -8,7 +8,7 @@
 	<version>2.1.10-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>sms-core</name>
-	<url>https://github.com/Lihuanghe/SMSGate</url>
+	<url></url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.test.skip>true</maven.test.skip>
@@ -19,31 +19,31 @@
 		<maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
 
-	<parent>
+	<!--<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
-	</parent>
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<scm>
-		<tag>master</tag>
-		<url>git@github.com:Lihuanghe/SMSGate.git</url>
-		<connection>scm:git:git@github.com:Lihuanghe/SMSGate.git</connection>
-		<developerConnection>scm:git:git@github.com:Lihuanghe/SMSGate.git</developerConnection>
-	</scm>
-	<developers>
-		<developer>
-			<name>LiHuanghe</name>
-			<email>jameslover121@163.com</email>
-			<organization>ChinaMobile</organization>
-		</developer>
-	</developers>
+	</parent>-->
+
+	<repositories>
+		<repository>
+			<id>tfs-beyondbit.com-default</id>
+			<url>http://tfs.beyondbit.com:5000/tfs/DefaultCollection/_packaging/Default/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>aliyun</id>
+			<name>aliyun Maven</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 
 		<dependency>
@@ -239,7 +239,7 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+		<!--	<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.1.2</version>
@@ -272,9 +272,9 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 			<!-- GPG -->
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>1.6</version>
@@ -286,7 +286,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 		</plugins>
 
 
@@ -302,13 +302,9 @@
 
 	</build>
 	<distributionManagement>
-		<snapshotRepository>
-			<id>oss</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
 		<repository>
-			<id>oss</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<id>tfs-beyondbit.com-default</id>
+			<url>http://tfs.beyondbit.com:5000/tfs/DefaultCollection/_packaging/Default/maven/v1</url>
 		</repository>
 	</distributionManagement>
 </project>
