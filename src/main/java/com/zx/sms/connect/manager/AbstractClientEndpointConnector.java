@@ -2,23 +2,18 @@ package com.zx.sms.connect.manager;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.FixedRecvByteBufAllocator;
+import io.netty.channel.*;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.internal.SocketUtils;
-
-import java.net.SocketAddress;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.SocketAddress;
 
 public abstract class AbstractClientEndpointConnector extends AbstractEndpointConnector {
 
@@ -66,7 +61,7 @@ public abstract class AbstractClientEndpointConnector extends AbstractEndpointCo
 			public void operationComplete(ChannelFuture f) throws Exception {
 				if(!f.isSuccess()){
 					if(idx+1 < hosts.length){
-						logger.info("retry connect to next host {}:{}",hosts[idx+1],port);
+						logger.debug("retry connect to next host {}:{}",hosts[idx+1],port);
 						doConnect(hosts,idx+1, port,localaddress);
 					}else{
 						logger.error("Connect to {}:{} failed. cause by {}.",getEndpointEntity().getHost(),port,f.cause().getMessage());
@@ -95,7 +90,7 @@ public abstract class AbstractClientEndpointConnector extends AbstractEndpointCo
 	protected void initSslCtx(Channel ch, EndpointEntity entity) {
 		ChannelPipeline pipeline = ch.pipeline();
 		if(entity instanceof ClientEndpoint){
-			logger.info("EndpointEntity {} Use SSL.",entity);
+			logger.debug("EndpointEntity {} Use SSL.",entity);
 			pipeline.addLast(getSslCtx().newHandler(ch.alloc(), entity.getHost(), entity.getPort()));
 		}
 	}

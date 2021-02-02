@@ -1,33 +1,33 @@
 package com.zx.sms.handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.connect.manager.EndpointEntity;
-
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 /**
- * 
- *
+ * @author david.chen
  */
-
 public class MessageLogHandler extends ChannelDuplexHandler {
 	private final Logger logger;
 	private EndpointEntity entity;
 
 	public MessageLogHandler(EndpointEntity entity) {
 		this.entity = entity;
-		if(entity!=null)
+		if(entity!=null) {
 			logger = LoggerFactory.getLogger(String.format(GlobalConstance.loggerNamePrefix, entity.getId()));
-		else
+		} else {
 			logger = LoggerFactory.getLogger(MessageLogHandler.class);
+		}
 	}
+	@Override
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception{
 		logger.warn("handlerAdded . {}", entity);
 	}

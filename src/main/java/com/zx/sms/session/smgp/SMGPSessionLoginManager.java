@@ -47,7 +47,7 @@ public class SMGPSessionLoginManager extends AbstractSessionLoginManager {
 		byte loginMode = (byte)(cliententity.getChannelType() == ChannelType.DUPLEX ? 2 : (cliententity.getChannelType() == ChannelType.UP ? 1:0));
 		req.setLoginMode(loginMode);
 		ch.writeAndFlush(req);
-		logger.info("session Start :Send SMGPLoginMessage seq :{}", req.getSequenceNo());
+		logger.debug("session Start :Send SMGPLoginMessage seq :{}", req.getSequenceNo());
 	}
 
 	@Override

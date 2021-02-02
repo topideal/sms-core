@@ -1,16 +1,14 @@
 package com.zx.sms.connect.manager.tcp;
 
+import com.zx.sms.connect.manager.CMPPEndpointManager;
+import com.zx.sms.connect.manager.EndpointEntity;
+import com.zx.sms.connect.manager.EndpointManager;
 import io.netty.buffer.Unpooled;
-
-import java.util.Set;
-
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.zx.sms.connect.manager.CMPPEndpointManager;
-import com.zx.sms.connect.manager.EndpointEntity;
-import com.zx.sms.connect.manager.EndpointManager;
+import java.util.Set;
 
 public class TestTcpEndPoint {
 	private static final Logger logger = LoggerFactory.getLogger(TestTcpEndPoint.class);
@@ -38,7 +36,7 @@ public class TestTcpEndPoint {
 //		EventLoopGroupFactory.INS.getWorker().scheduleAtFixedRate(new Runnable() {
 //			@Override
 //			public void run() {
-//				logger.info("connections: {}",manager.getEndpointConnector(server).getConnectionNum());
+//				logger.debug("connections: {}",manager.getEndpointConnector(server).getConnectionNum());
 //			}
 //		}, 10, 10, TimeUnit.SECONDS);
 		

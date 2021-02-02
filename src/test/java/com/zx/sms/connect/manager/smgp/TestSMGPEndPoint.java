@@ -103,7 +103,7 @@ public class TestSMGPEndPoint {
 			//接收成功，如果失败可以获取失败原因，比如遇到连接突然中断错误等等
 			if(future.isSuccess()){
 				//打印收到的response消息
-				logger.info("response:{}",future.get());
+				logger.debug("response:{}",future.get());
 			}else{
 
 				logger.error("response:{}",future.cause());

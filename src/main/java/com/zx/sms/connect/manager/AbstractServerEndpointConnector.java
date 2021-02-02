@@ -1,25 +1,19 @@
 package com.zx.sms.connect.manager;
 
+import com.zx.sms.session.AbstractSessionStateManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.FixedRecvByteBufAllocator;
+import io.netty.channel.*;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
-
-import java.util.concurrent.ConcurrentMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.zx.sms.session.AbstractSessionStateManager;
+import java.util.concurrent.ConcurrentMap;
 /**
  *@author Lihuanghe(18852780@qq.com)
  */
@@ -81,7 +75,7 @@ public abstract class AbstractServerEndpointConnector extends AbstractEndpointCo
 	protected void initSslCtx(Channel ch, EndpointEntity entity) {
 		ChannelPipeline pipeline = ch.pipeline();
 		if(entity instanceof ServerEndpoint){
-			logger.info("EndpointEntity {} Use SSL.",entity);
+			logger.debug("EndpointEntity {} Use SSL.",entity);
 			pipeline.addLast(getSslCtx().newHandler(ch.alloc()));
 		}
 	}

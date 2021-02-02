@@ -1,27 +1,25 @@
 package com.zx.sms.handler.api.gate;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.commons.lang3.RandomUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.zx.sms.BaseMessage;
 import com.zx.sms.common.util.ChannelUtil;
 import com.zx.sms.connect.manager.EventLoopGroupFactory;
 import com.zx.sms.connect.manager.ExitUnlimitCirclePolicy;
 import com.zx.sms.handler.api.AbstractBusinessHandler;
 import com.zx.sms.session.cmpp.SessionState;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.Promise;
+import org.apache.commons.lang3.RandomUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 
@@ -80,7 +78,7 @@ public abstract class SessionConnectedHandler extends AbstractBusinessHandler {
 										@Override
 										public void operationComplete(Future<BaseMessage> future) throws Exception {
 											if (future.isSuccess()) {
-//												 logger.info("response:{}",future.get());
+//												 logger.debug("response:{}",future.get());
 											} else {
 //												 logger.error("response:{}",future.cause());
 											}
@@ -112,7 +110,7 @@ public abstract class SessionConnectedHandler extends AbstractBusinessHandler {
 
 					boolean over = ch.isActive() && tmptotal.get() > 0;
 					if (!over) {
-						logger.info("========send over.============");
+						logger.debug("========send over.============");
 
 						// ch.writeAndFlush(new CmppTerminateRequestMessage());
 					}

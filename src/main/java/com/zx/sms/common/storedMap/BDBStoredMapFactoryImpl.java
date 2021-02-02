@@ -1,20 +1,5 @@
 package com.zx.sms.common.storedMap;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.sleepycat.bind.EntryBinding;
 import com.sleepycat.bind.serial.StoredClassCatalog;
 import com.sleepycat.collections.StoredMap;
@@ -25,6 +10,20 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.zx.sms.config.PropertiesUtils;
 import com.zx.sms.connect.manager.EventLoopGroupFactory;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, VersionObject > {
 	INS;
@@ -105,7 +104,7 @@ public enum BDBStoredMapFactoryImpl implements StoredMapFactory<Serializable, Ve
 		QueueEnvironment env = envMap.get(pathName);
 
 		if (env == null) {
-			logger.info("init BDBPath : {}" ,pathName);
+			logger.debug("init BDBPath : {}" ,pathName);
 			env = new QueueEnvironment().buildEnvironment(pathName).buildStoredClassCatalog();
 			QueueEnvironment oldenv = envMap.putIfAbsent(pathName, env);
 			return oldenv == null ? env : oldenv;

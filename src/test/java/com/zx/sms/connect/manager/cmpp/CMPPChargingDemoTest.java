@@ -44,9 +44,9 @@ public class CMPPChargingDemoTest {
 				        ctx.fireChannelRead(msg);
 				        if(msg instanceof BaseMessage){
 				        	if(((BaseMessage) msg).isRequest()){
-				        		 logger.info("read request {},seq={}",readcnt.getAndIncrement(),((BaseMessage) msg).getSequenceNo());
+				        		 logger.debug("read request {},seq={}",readcnt.getAndIncrement(),((BaseMessage) msg).getSequenceNo());
 				        	}else{
-				        		logger.info("read response.seq={}",((BaseMessage) msg).getSequenceNo());
+				        		logger.debug("read response.seq={}",((BaseMessage) msg).getSequenceNo());
 				        	}
 				        }
 				       

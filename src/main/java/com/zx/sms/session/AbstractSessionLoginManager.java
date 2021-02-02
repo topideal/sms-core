@@ -1,27 +1,25 @@
 package com.zx.sms.session;
 
-import java.net.SocketAddress;
-import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.zx.sms.common.GlobalConstance;
 import com.zx.sms.connect.manager.ClientEndpoint;
 import com.zx.sms.connect.manager.EndpointConnector;
 import com.zx.sms.connect.manager.EndpointEntity;
 import com.zx.sms.connect.manager.EndpointManager;
 import com.zx.sms.session.cmpp.SessionState;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
 
 
 
 /**
  * 处理客户端或者服务端登陆，密码校验。协议协商 建立连接前，不会启动消息重试和消息可靠性保证
+ * @author david.chen
  */
 public abstract class AbstractSessionLoginManager extends ChannelDuplexHandler {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractSessionLoginManager.class);
@@ -37,7 +35,8 @@ public abstract class AbstractSessionLoginManager extends ChannelDuplexHandler {
 		this.entity = entity;
 	}
 	
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    @Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
     	if(state == SessionState.DisConnect){
     		logger.error("login error entity : " + entity.toString(),cause);
     		ctx.close();
@@ -68,7 +67,9 @@ public abstract class AbstractSessionLoginManager extends ChannelDuplexHandler {
     	
 		if(state == SessionState.Connect){
 			final EndpointConnector conn = EndpointManager.INS.getEndpointConnector(entity);
-			if(conn!=null)conn.removeChannel(ch);
+			if(conn!=null) {
+				conn.removeChannel(ch);
+			}
 			logger.warn("Connection closed . {} , connect count : {}" ,entity,conn==null?0:conn.getConnectionNum());
 		}else{
 			logger.warn("session is not created. the entity is {}.channel remote is {}" ,entity ,ctx.channel().remoteAddress());
@@ -144,7 +145,7 @@ public abstract class AbstractSessionLoginManager extends ChannelDuplexHandler {
 				
 				//通知业务handler连接已建立完成
 				notifyChannelConnected(ctx);
-				logger.info("{} login success on channel {}" , childentity.getId(), ctx.channel());
+				logger.debug("{} login success on channel {}" , childentity.getId(), ctx.channel());
 			}else{
 				//超过最大连接数了
 				failedLogin(ctx, message, 5);
@@ -175,14 +176,14 @@ public abstract class AbstractSessionLoginManager extends ChannelDuplexHandler {
 				state = SessionState.Connect;
 				//如果没有超过最大连接数配置，建立连接
 				notifyChannelConnected(ctx);
-				logger.info("{} login success on channel {}" ,entity.getId(), ctx.channel());
+				logger.debug("{} login success on channel {}" ,entity.getId(), ctx.channel());
 			}else {
 				ctx.close();
 				return;
 			}
 				
 		}else{
-			logger.info("{} login failed (status = {}) on channel {}" ,entity.getId(), status ,ctx.channel());
+			logger.error("{} login failed (status = {}) on channel {}" ,entity.getId(), status ,ctx.channel());
 			ctx.close();
 			return;
 		}

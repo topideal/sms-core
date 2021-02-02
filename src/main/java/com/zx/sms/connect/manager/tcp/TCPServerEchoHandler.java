@@ -6,7 +6,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +26,7 @@ public class TCPServerEchoHandler extends ChannelDuplexHandler {
 		Channel ch = ctx.channel();
 		ch.writeAndFlush(msg);
 
-		logger.info("channelID :{} ,read : {}, totalread:{},trans  : {} release {}",ctx.channel(), cnt, totalread, trans, release);
+		logger.debug("channelID :{} ,read : {}, totalread:{},trans  : {} release {}",ctx.channel(), cnt, totalread, trans, release);
 	}
 	
     @Override

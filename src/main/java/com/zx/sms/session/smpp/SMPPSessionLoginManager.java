@@ -1,28 +1,21 @@
 package com.zx.sms.session.smpp;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.zx.sms.codec.smpp.SmppConstants;
 import com.zx.sms.codec.smpp.Tlv;
 import com.zx.sms.codec.smpp.TlvConvertException;
-import com.zx.sms.codec.smpp.msg.BaseBind;
-import com.zx.sms.codec.smpp.msg.BaseBindResp;
-import com.zx.sms.codec.smpp.msg.BindReceiver;
-import com.zx.sms.codec.smpp.msg.BindTransceiver;
-import com.zx.sms.codec.smpp.msg.BindTransmitter;
-import com.zx.sms.codec.smpp.msg.PduResponse;
+import com.zx.sms.codec.smpp.msg.*;
 import com.zx.sms.connect.manager.EndpointEntity;
 import com.zx.sms.connect.manager.EndpointEntity.ChannelType;
 import com.zx.sms.connect.manager.smpp.SMPPEndpointEntity;
 import com.zx.sms.connect.manager.smpp.SMPPServerEndpointEntity;
 import com.zx.sms.session.AbstractSessionLoginManager;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SMPPSessionLoginManager extends AbstractSessionLoginManager {
 	private static final Logger logger = LoggerFactory.getLogger(SMPPSessionLoginManager.class);
@@ -89,7 +82,7 @@ public class SMPPSessionLoginManager extends AbstractSessionLoginManager {
 	            if (scInterfaceVersion != null) {
 	                try {
 	                    byte tempInterfaceVersion = scInterfaceVersion.getValueAsByte();
-	                    logger.info("Server support version : {}" ,tempInterfaceVersion);
+	                    logger.debug("Server support version : {}" ,tempInterfaceVersion);
 	                } catch (TlvConvertException e) {
 	                    logger.warn("Unable to convert sc_interface_version to a byte value: {}", e.getMessage());
 	                }
